@@ -1,0 +1,33 @@
+{
+  "name": "@pipeworx/mcp-medicaid-state-plans",
+  "version": "0.1.0",
+  "description": "medicaid-state-plans -- CMS Medicaid.gov: Medicaid State Plan Amendments (SPAs) and the State Waivers List (section 1115 demonstrations, 1915 waivers).",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mcp-medicaid-state-plans": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "medicaid-state-plans"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipeworx-io/mcp-medicaid-state-plans.git"
+  },
+  "mcpName": "io.github.pipeworx-io/medicaid-state-plans",
+  "pipeworx": {
+    "mode": "gateway",
+    "slug": "medicaid-state-plans",
+    "gatewaySlug": "medicaid-state-plans",
+    "sourceHash": "v1-5accef58997a15d39268f9d9b00d2c551f5ddb2df74bd529df5608061c13ce9c",
+    "sourceCommit": "afcaf44429ea5fe1396ff1733e1b8651aeefcde8"
+  }
+}

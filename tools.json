@@ -1,0 +1,150 @@
+[
+  {
+    "name": "spa_search",
+    "description": "Search CMS Medicaid.gov Medicaid State Plan Amendments (SPAs) by state, topic, keyword and approval or effective date. Returns transmittal number (e.g. FL-25-0015), state, summary, approval and effective dates, topic tags and the approval-package link, newest approval first by default. Use for \"which SPAs changed FQHC reimbursement in Florida\". Unknown state or topic returns the valid values. Then call spa_get for the document text.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State name or 2-letter code (e.g. \"Florida\" or \"FL\"). Several can be given separated by \"|\"."
+        },
+        "topic": {
+          "type": "string",
+          "description": "The publisher's topic tag (e.g. \"Reimbursement\", \"Managed Care\"). Unknown tags return near matches."
+        },
+        "q": {
+          "type": "string",
+          "description": "Keywords matched against the amendment text and summary, or a transmittal number."
+        },
+        "approval_from": {
+          "type": "string",
+          "description": "Earliest approval date, YYYY-MM-DD or MM/DD/YYYY."
+        },
+        "approval_to": {
+          "type": "string",
+          "description": "Latest approval date."
+        },
+        "effective_from": {
+          "type": "string",
+          "description": "Earliest effective date."
+        },
+        "effective_to": {
+          "type": "string",
+          "description": "Latest effective date."
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "approval_newest",
+            "approval_oldest",
+            "effective_newest",
+            "effective_oldest"
+          ],
+          "description": "Default approval_newest."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Rows per page, 1-100 (default 25)."
+        },
+        "page": {
+          "type": "number",
+          "description": "Zero-based page number (default 0). Use total_pages / has_next from the response."
+        }
+      }
+    }
+  },
+  {
+    "name": "spa_get",
+    "description": "Get one Medicaid State Plan Amendment by transmittal number (e.g. FL-25-0015, OH-22-0017): CMS Medicaid.gov metadata (state, summary, approval and effective dates, topics) plus the text of the approval package, returned as a window -- offset and max_chars, default 8,000 characters -- never the whole package. Follow text_next_offset until text_has_more is false. Scanned packages with no text layer say so instead of returning empty text. Set include_text=false for metadata only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "transmittal_number": {
+          "type": "string",
+          "description": "State code, two-digit year and sequence, e.g. \"FL-25-0015\"."
+        },
+        "offset": {
+          "type": "number",
+          "description": "Character offset into the extracted text (default 0)."
+        },
+        "max_chars": {
+          "type": "number",
+          "description": "Characters of text to return, 500-30000 (default 8000)."
+        },
+        "include_text": {
+          "type": "boolean",
+          "description": "false returns metadata and the package link only."
+        }
+      },
+      "required": [
+        "transmittal_number"
+      ]
+    }
+  },
+  {
+    "name": "waiver_search",
+    "description": "Search the CMS Medicaid.gov State Waivers List: section 1115 demonstrations and 1915(b)/(c) waivers, by state, authority, status and date. Returns waiver id, title, state, authority, status and approval and effective dates. Authority values: 1115, 1915 (b1), 1915 (b2), 1915 (b3), 1915 (b4), 1915 (c). Status values: Approved, Disapproved, Expired, Pending, Terminated, Withdrawn. Then call waiver_get for expiration date and documents.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "State name or 2-letter code. Several can be given separated by \"|\"."
+        },
+        "authority": {
+          "type": "string",
+          "description": "e.g. \"1115\" or \"1915 (c)\"."
+        },
+        "status": {
+          "type": "string",
+          "description": "e.g. \"Approved\", \"Pending\", \"Expired\"."
+        },
+        "q": {
+          "type": "string",
+          "description": "Keywords matched against the waiver title."
+        },
+        "approval_from": {
+          "type": "string",
+          "description": "Earliest approval date, YYYY-MM-DD or MM/DD/YYYY."
+        },
+        "approval_to": {
+          "type": "string",
+          "description": "Latest approval date."
+        },
+        "effective_from": {
+          "type": "string",
+          "description": "Earliest effective date."
+        },
+        "effective_to": {
+          "type": "string",
+          "description": "Latest effective date."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Rows per page, 1-100 (default 25)."
+        },
+        "page": {
+          "type": "number",
+          "description": "Zero-based page number (default 0)."
+        }
+      }
+    }
+  },
+  {
+    "name": "waiver_get",
+    "description": "Get one Medicaid waiver or demonstration from the CMS Medicaid.gov State Waivers List by waiver_id (from waiver_search): state, authority, status, approval, effective and expiration dates, and the supporting documents (approved applications, waiver descriptions, amendments) with dates, links and file sizes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "waiver_id": {
+          "type": "string",
+          "description": "Numeric id from waiver_search, e.g. \"80911\"."
+        }
+      },
+      "required": [
+        "waiver_id"
+      ]
+    }
+  }
+]
